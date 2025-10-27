@@ -1,0 +1,51 @@
+# .github/workflows/ci.yml
+name: Pipeline de CI/CD para Ingeniería Web
+
+# Se activa cada vez que haces 'push' a la rama 'main'
+on:
+  push:
+    branches: [ main ]
+
+# Lista de trabajos a ejecutar
+jobs:
+  # 1er Job: Probar la aplicación
+  build-and-test:
+    name: 🧪 Construir y Probar
+    # Servidor virtual donde se ejecutará
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Descarga tu código del repo al servidor virtual
+      - name: Clonar Repositorio
+        uses: actions/checkout@v3
+
+      # 2. Configura Node.js en el servidor virtual
+      - name: Configurar Node.js v18
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      # 3. Instalar las dependencias (npm install)
+      - name: Instalar Dependencias
+        run: npm install
+
+      # 4. Ejecutar las pruebas (npm test)
+      # (Criterio: Automatización de pruebas)
+      - name: Ejecutar Pruebas
+        run: npm test
+
+  # 2do Job: Desplegar (Simulación)
+  deploy:
+    name: 🚀 Desplegar (Simulación)
+    # Este job solo corre si 'build-and-test' fue exitoso
+    needs: build-and-test
+    runs-on: ubuntu-latest
+
+    steps:
+      # (Criterio: Automatización de... despliegue)
+      - name: Simular Despliegue
+        run: |
+          echo "✅ Pruebas pasadas."
+          echo "Iniciando despliegue a un servidor..."
+          echo "..."
+          echo "🎉 ¡Despliegue simulado con éxito!"
